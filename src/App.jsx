@@ -347,12 +347,13 @@ function ProfileModal({ user, onClose, onLogout, userEvents, setUserEvents, user
 
 // ==================== TABS ====================
 
-function DuyurularTab({ user, userEvents, setUserEvents, announcements, setAnnouncements }) {
+function DuyurularTab({ user, userEvents, setUserEvents, announcements, setAnnouncements, allParticipants, setAllParticipants }) {
   const [filterDept, setFilterDept] = useState('TÜMÜ');
   const [filterComm, setFilterComm] = useState('TÜMÜ');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: '', date: '', description: '', department: 'YBS', committee: 'ORGANİZASYON' });
   const [toast, setToast] = useState(null);
+  const [showParticipants, setShowParticipants] = useState({});
 
   const filtered = announcements.filter(item => {
     const matchDept = filterDept === 'TÜMÜ' || item.department === filterDept || item.department === 'TÜMÜ';
@@ -365,8 +366,10 @@ function DuyurularTab({ user, userEvents, setUserEvents, announcements, setAnnou
   const toggleJoin = (id) => {
     if (isJoined(id)) {
       setUserEvents(userEvents.filter(e => e.id !== id));
+      setAllParticipants(prev => ({...prev, [id]: (prev[id] || []).filter(p => p.name !== user.name)}));
     } else {
       setUserEvents([...userEvents, { id, rating: 0 }]);
+      setAllParticipants(prev => ({...prev, [id]: [...(prev[id] || []), { name: user.name, email: user.email, role: user.roleString }]}));
     }
   };
 
@@ -469,14 +472,49 @@ function DuyurularTab({ user, userEvents, setUserEvents, announcements, setAnnou
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>👥 {event.participants + (isJoined(event.id) ? 1 : 0)} Katılımcı</span>
-              <button 
-                onClick={() => toggleJoin(event.id)}
-                style={{ backgroundColor: isJoined(event.id) ? 'var(--success)' : 'var(--primary)', color: 'white', padding: '8px 16px', borderRadius: '6px', fontSize: '13px', fontWeight: 'bold' }}
-              >
-                {isJoined(event.id) ? (user.role === 'mezun' ? 'Misafirsin ✓' : 'Kaydoldun ✓') : (user.role === 'mezun' ? 'Misafir Ol' : 'Kayıt Ol')}
-              </button>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>👥 {(allParticipants[event.id] || []).length} Katılımcı</span>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {user.role === 'yonetici' && (
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setShowParticipants(prev => ({...prev, [event.id]: !prev[event.id]})); }}
+                    style={{ backgroundColor: showParticipants[event.id] ? 'rgba(26,54,93,0.15)' : 'rgba(26,54,93,0.05)', color: 'var(--primary)', padding: '8px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', border: '1px solid var(--primary)', transition: 'all 0.2s' }}
+                  >
+                    👥 {showParticipants[event.id] ? 'Katılımcıları Gizle' : `Katılımcıları Gör (${(allParticipants[event.id] || []).length})`}
+                  </button>
+                )}
+                <button 
+                  onClick={() => toggleJoin(event.id)}
+                  style={{ backgroundColor: isJoined(event.id) ? 'var(--success)' : 'var(--primary)', color: 'white', padding: '8px 16px', borderRadius: '6px', fontSize: '13px', fontWeight: 'bold' }}
+                >
+                  {isJoined(event.id) ? (user.role === 'mezun' ? 'Misafirsin ✓' : 'Kaydoldun ✓') : (user.role === 'mezun' ? 'Misafir Ol' : 'Kayıt Ol')}
+                </button>
+              </div>
             </div>
+
+            {/* Yönetici: Katılımcı Listesi (Toggle ile) */}
+            {user.role === 'yonetici' && showParticipants[event.id] && (
+              <div className="animate-fade-in" style={{ marginTop: '12px', padding: '12px', backgroundColor: 'var(--input-bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--primary)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>👥 Kayıtlı Katılımcılar ({(allParticipants[event.id] || []).length})</h4>
+                {(allParticipants[event.id] || []).length === 0 ? (
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic' }}>Henüz bu etkinliğe kayıtlı katılımcı bulunmuyor.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {(allParticipants[event.id] || []).map((p, idx) => (
+                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px', backgroundColor: 'var(--card-bg)', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <div className="avatar" style={{ width: '28px', height: '28px', fontSize: '12px' }}>{p.name[0]}</div>
+                          <div>
+                            <span style={{ fontSize: '13px', fontWeight: '600' }}>{p.name}</span>
+                            <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginLeft: '8px' }}>{p.email}</span>
+                          </div>
+                        </div>
+                        <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', backgroundColor: 'rgba(26,54,93,0.1)', padding: '2px 8px', borderRadius: '4px' }}>{p.role}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -542,18 +580,21 @@ function DuyurularTab({ user, userEvents, setUserEvents, announcements, setAnnou
   );
 }
 
-function StatsAndJobsTab({ user, userJobs, setUserJobs, jobs, setJobs }) {
+function StatsAndJobsTab({ user, userJobs, setUserJobs, jobs, setJobs, allApplicants, setAllApplicants }) {
   const [expandedId, setExpandedId] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newJob, setNewJob] = useState({ title: '', company: '', location: '', type: 'Staj', description: '', requirements: '' });
   const [toast, setToast] = useState(null);
+  const [showApplicants, setShowApplicants] = useState({});
 
   const toggleApply = (e, id) => {
     e.stopPropagation();
     if (userJobs.includes(id)) {
       setUserJobs(userJobs.filter(j => j !== id));
+      setAllApplicants(prev => ({...prev, [id]: (prev[id] || []).filter(p => p.name !== user.name)}));
     } else {
       setUserJobs([...userJobs, id]);
+      setAllApplicants(prev => ({...prev, [id]: [...(prev[id] || []), { name: user.name, email: user.email, role: user.roleString }]}));
     }
   };
 
@@ -646,6 +687,41 @@ function StatsAndJobsTab({ user, userJobs, setUserJobs, jobs, setJobs }) {
                 <ul style={{ paddingLeft: '20px', fontSize: '13.5px', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {job.requirements.map((req, i) => <li key={i}>{req}</li>)}
                 </ul>
+
+                {/* Yönetici: Başvuruları Gör Butonu */}
+                {user.role === 'yonetici' && (
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setShowApplicants(prev => ({...prev, [job.id]: !prev[job.id]})); }}
+                    style={{ marginTop: '16px', backgroundColor: showApplicants[job.id] ? 'rgba(26,54,93,0.15)' : 'rgba(26,54,93,0.05)', color: 'var(--primary)', padding: '10px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: 'bold', border: '1px solid var(--primary)', transition: 'all 0.2s', width: '100%', textAlign: 'center' }}
+                  >
+                    📋 {showApplicants[job.id] ? 'Başvuruları Gizle' : `Başvuruları Gör (${(allApplicants[job.id] || []).length})`}
+                  </button>
+                )}
+
+                {/* Yönetici: Başvuran Listesi (Toggle ile) */}
+                {user.role === 'yonetici' && showApplicants[job.id] && (
+                  <div className="animate-fade-in" style={{ marginTop: '12px', padding: '12px', backgroundColor: 'var(--input-bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                    <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--primary)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>📋 Başvuranlar ({(allApplicants[job.id] || []).length})</h4>
+                    {(allApplicants[job.id] || []).length === 0 ? (
+                      <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic' }}>Henüz bu ilana başvuran bulunmuyor.</p>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {(allApplicants[job.id] || []).map((p, idx) => (
+                          <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px', backgroundColor: 'var(--card-bg)', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <div className="avatar" style={{ width: '28px', height: '28px', fontSize: '12px' }}>{p.name[0]}</div>
+                              <div>
+                                <span style={{ fontSize: '13px', fontWeight: '600' }}>{p.name}</span>
+                                <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginLeft: '8px' }}>{p.email}</span>
+                              </div>
+                            </div>
+                            <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', backgroundColor: 'rgba(26,54,93,0.1)', padding: '2px 8px', borderRadius: '4px' }}>{p.role}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1365,6 +1441,8 @@ export default function App() {
   const [announcements, setAnnouncements] = useState(initialAnnouncements);
   const [jobs, setJobs] = useState(initialJobs);
   const [roadmaps, setRoadmaps] = useState(guideRoadmaps);
+  const [allParticipants, setAllParticipants] = useState({});
+  const [allApplicants, setAllApplicants] = useState({});
   
   const [showProfile, setShowProfile] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -1383,8 +1461,8 @@ export default function App() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'duyurular': return <DuyurularTab user={user} userEvents={userEvents} setUserEvents={setUserEvents} announcements={announcements} setAnnouncements={setAnnouncements} />;
-      case 'kariyer': return <StatsAndJobsTab user={user} userJobs={userJobs} setUserJobs={setUserJobs} jobs={jobs} setJobs={setJobs} />;
+      case 'duyurular': return <DuyurularTab user={user} userEvents={userEvents} setUserEvents={setUserEvents} announcements={announcements} setAnnouncements={setAnnouncements} allParticipants={allParticipants} setAllParticipants={setAllParticipants} />;
+      case 'kariyer': return <StatsAndJobsTab user={user} userJobs={userJobs} setUserJobs={setUserJobs} jobs={jobs} setJobs={setJobs} allApplicants={allApplicants} setAllApplicants={setAllApplicants} />;
       case 'rehber': return <RehberTab user={user} roadmaps={roadmaps} setRoadmaps={setRoadmaps} />;
       case 'akademi': return <AkademiTab user={user} />;
       case 'talk': return <MezunTalkTab user={user} />;
@@ -1445,9 +1523,14 @@ export default function App() {
             <div style={{ color: 'var(--primary)' }}><Icons.School /></div>
             <h2 style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '18px' }}>KampüsAğ</h2>
           </div>
-          <button onClick={() => setShowSettings(true)} style={{ display: 'flex', alignItems: 'center', color: 'var(--primary)' }}>
-            <Icons.Settings />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button onClick={() => setShowProfile(true)} style={{ display: 'flex', alignItems: 'center', color: 'var(--primary)' }}>
+              <Icons.User />
+            </button>
+            <button onClick={() => setShowSettings(true)} style={{ display: 'flex', alignItems: 'center', color: 'var(--primary)' }}>
+              <Icons.Settings />
+            </button>
+          </div>
         </header>
 
         <div style={{ flex: 1, overflowY: 'auto' }}>

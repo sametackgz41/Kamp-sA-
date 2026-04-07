@@ -6,7 +6,7 @@ export const initialAnnouncements = [
     description: 'Yılın en büyük girişimcilik etkinliklerinden biri olan zirveye kayıtlar başladı!',
     department: 'İŞLETME',
     committee: 'ORGANİZASYON',
-    participants: 38
+    participants: 0
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const initialAnnouncements = [
     description: 'Büyük veriyi anlama ve Python araçlarıyla modelleme eğitimi verilecektir.',
     department: 'YBS',
     committee: 'ARGE',
-    participants: 17
+    participants: 0
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const initialAnnouncements = [
     description: 'Sektörün önde gelen isimlerinden e-ihracatın güncel dinamiklerini dinliyoruz.',
     department: 'UTİ',
     committee: 'SOSYAL SORUMLULUK',
-    participants: 24
+    participants: 0
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const initialAnnouncements = [
     description: 'Tüm departmanların topluluk üyeleriyle ortak sosyal medya stratejisi belirleme etkinliği.',
     department: 'TÜMÜ',
     committee: 'SOSYAL MEDYA',
-    participants: 12
+    participants: 0
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ export const initialAnnouncements = [
     description: 'Sponsorluk komitemizin markalarla gerçekleştirdiği açık görüşme teknikleri eğitimi.',
     department: 'İŞLETME',
     committee: 'SPONSORLUK',
-    participants: 9
+    participants: 0
   }
 ];
 
@@ -109,19 +109,17 @@ export const initialTalkPosts = [
     authorName: 'Mehmet Özveri',
     authorTitle: '2020 Mezunu / Yazılım Mühendisi',
     content: 'Sektördeki ilk senemde şunu öğrendim: En önemli beceri iletişim ve İngilizce. Algoritma elbette önemli ama ekip içi uyum her zaman projeyi kurtarıyor.',
-    likes: 14,
+    likes: 0,
     likedBy: [], 
-    comments: [
-      { id: 101, author: 'Ayşe Kaya', content: 'Kesinlikle katılıyorum.' }
-    ]
+    comments: []
   },
   {
     id: 2,
     authorName: 'Zeynep Ak',
     authorTitle: '2015 Mezunu / İK Yöneticisi',
     content: 'Yeni mezun arkadaşların özgeçmişlerinde en çok dikkat ettiğimiz şey takım çalışmaları ve gönüllü projelerde yer alıp almadıklarıdır. Herkese mülakatlarda başarılar!',
-    likes: 21,
-    likedBy: ['Ahmet Yılmaz'], 
+    likes: 0,
+    likedBy: [], 
     comments: []
   }
 ];
