@@ -1,16 +1,132 @@
-# React + Vite
+# 🏫 KampüsAğ – Üniversite Topluluk Platformu
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+KampüsAğ, üniversite öğrencileri, mezunları ve yöneticileri bir araya getiren modern bir web platformudur. Etkinlik takibi, kariyer rehberliği, ders notu paylaşımı ve mezun iletişimi gibi birçok özelliği tek çatı altında sunar.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Özellikler
 
-## React Compiler
+### 👤 Rol Tabanlı Kullanıcı Sistemi
+- **Öğrenci:** Bölüm seçimi ile kayıt, etkinliklere katılım, staj başvurusu
+- **Mezun:** Mezuniyet yılı seçimi ve belge doğrulaması ile kayıt, MezunTalk'ta deneyim paylaşımı
+- **Yönetici:** Duyuru/etkinlik oluşturma & silme, staj ilanı yönetimi, kariyer haritası ekleme
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 📢 Duyurular ve Etkinlikler
+- Bölüm ve komite bazlı filtreleme
+- Etkinliklere kayıt olma / iptal etme
+- Yönetici tarafından yeni etkinlik oluşturma ve silme
 
-## Expanding the ESLint configuration
+### 💼 Staj / Kariyer
+- İş ve staj ilanlarını listeleme
+- Başvuru yapma ve takip etme
+- Yönetici tarafından yeni ilan ekleme ve silme
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🗺️ Kariyer Rehberi
+- Bölümlere özel kariyer yol haritaları (akordeon görünüm)
+- **Luminia AI** – Gemini tabanlı yapay zeka kariyer koçu
+- Yönetici tarafından yeni kariyer rotası ekleme
+
+### 🎓 Akademi – Ders Notları
+- Kullanıcılar arası ders notu paylaşımı
+- Gerçek dosya yükleme, indirme ve görüntüleme
+- Kendi notlarını silme yetkisi
+
+### 💬 MezunTalk
+- Mezunların kariyer deneyimlerini paylaştığı forum
+- Beğeni ve yorum sistemi
+- Yeni gönderi oluşturma
+
+### ⚙️ Ek Özellikler
+- 🌙 **Karanlık / Aydınlık Tema** desteği
+- 📱 **Responsive tasarım** (masaüstü sidebar + mobil bottom nav)
+- 👤 **Profil yönetimi** – katıldığı etkinlikler, başvurduğu ilanlar, puanlama
+- 🔔 **Bildirim tercihleri** ayarları
+- 🔐 **Şifre değiştirme** ekranı
+
+---
+
+## 🛠️ Teknoloji Yığını
+
+| Teknoloji | Kullanım |
+|-----------|----------|
+| **React** | Kullanıcı arayüzü |
+| **Vite** | Geliştirme sunucusu ve build aracı |
+| **Vanilla CSS** | Tema değişkenleri ile özelleştirilmiş stil sistemi |
+| **Google Gemini API** | Luminia AI kariyer koçu |
+| **React Portal** | Modal ve toast yönetimi |
+
+---
+
+## 📦 Kurulum
+
+```bash
+# 1. Projeyi klonlayın
+git clone https://github.com/KULLANICI_ADINIZ/KampusAg.git
+cd KampusAg
+
+# 2. Bağımlılıkları yükleyin
+npm install
+
+# 3. Ortam değişkenlerini ayarlayın
+#    Proje kök dizininde .env dosyası oluşturun:
+echo VITE_GEMINI_API_KEY=your_gemini_api_key_here > .env
+
+# 4. Geliştirme sunucusunu başlatın
+npm run dev
+```
+
+> **Not:** Luminia AI özelliğini kullanabilmek için [Google AI Studio](https://aistudio.google.com/apikey) üzerinden ücretsiz bir Gemini API anahtarı almanız gerekmektedir.
+
+---
+
+## 📁 Proje Yapısı
+
+```
+KampüsAğ Proje/
+├── public/
+│   ├── favicon.svg
+│   └── icons.svg
+├── src/
+│   ├── assets/
+│   ├── data/
+│   │   └── mockData.js        # Başlangıç verileri
+│   ├── App.jsx                # Ana uygulama bileşeni
+│   ├── App.css
+│   ├── index.css              # Tema değişkenleri ve global stiller
+│   └── main.jsx               # Giriş noktası
+├── .env                       # API anahtarları (git'e dahil değil)
+├── .gitignore
+├── index.html
+├── package.json
+└── vite.config.js
+```
+
+---
+
+## 🔑 Test Hesapları
+
+| Rol | E-Posta | Şifre |
+|-----|---------|-------|
+| Öğrenci | `numara@ogr.uludag.edu.tr` | herhangi |
+| Yönetici | `admin@ogr.uludag.edu.tr` | herhangi |
+| Mezun | `kisisel@email.com` | herhangi |
+
+> Kayıt Ol sekmesinden yeni hesap oluşturabilirsiniz. Mezunlar için mezuniyet yılı seçimi ve belge yüklemesi zorunludur.
+
+---
+
+## 📸 Ekran Görüntüleri
+
+> Projeyi çalıştırdıktan sonra ekran görüntüleri eklenebilir.
+
+---
+
+## 📄 Lisans
+
+Bu proje eğitim amaçlı geliştirilmiştir.
+
+---
+
+## 👨‍💻 Geliştirici
+
+Bursa Uludağ Üniversitesi – İktisadi ve İdari Bilimler Fakültesi
