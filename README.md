@@ -2,6 +2,8 @@
 
 KampüsAğ, üniversite öğrencileri, mezunları ve yöneticileri bir araya getiren modern bir web platformudur. Etkinlik takibi, kariyer rehberliği, ders notu paylaşımı ve mezun iletişimi gibi birçok özelliği tek çatı altında sunar.
 
+### 🔗 [Canlı Demo → kampusag.vercel.app](https://kampusag.vercel.app)
+
 ---
 
 ## 🚀 Özellikler
