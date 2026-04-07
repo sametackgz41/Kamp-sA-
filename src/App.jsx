@@ -76,7 +76,7 @@ function Auth({ onLogin }) {
     const userRoleStr = role === 'ogrenci' ? 'Öğrenci' : role === 'mezun' ? 'Mezun' : 'Yönetici';
     const finalName = isLogin && !name ? `Kullanıcı (${userRoleStr})` : name;
     
-    const deptNames = { 'YBS': 'Yönetim Bilişim Sistemleri', 'UTİ': 'Uluslararası Ticaret ve İşletmecilik', 'İŞLETME': 'İşletme' };
+    const deptNames = { 'YBS': 'Yönetim Bilişim Sistemleri', 'UTI': 'Uluslararası Ticaret ve İşletmecilik', 'ISLETME': 'İşletme' };
     onLogin({
       name: finalName,
       email,
@@ -135,8 +135,8 @@ function Auth({ onLogin }) {
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {[
                   { code: 'YBS', label: 'Yönetim Bilişim Sistemleri' },
-                  { code: 'UTİ', label: 'Uluslararası Ticaret ve İşletmecilik' },
-                  { code: 'İŞLETME', label: 'İşletme' }
+                  { code: 'UTI', label: 'Uluslararası Ticaret ve İşletmecilik' },
+                  { code: 'ISLETME', label: 'İşletme' }
                 ].map(dept => (
                   <button 
                     type="button" 
