@@ -131,4 +131,4 @@ Bu proje eğitim amaçlı geliştirilmiştir.
 
 ## 👨‍💻 Geliştirici
 
-Bursa Uludağ Üniversitesi – İktisadi ve İdari Bilimler Fakültesi
+Bursa Uludağ Üniversitesi – İnegöl İşletme Fakültesi
